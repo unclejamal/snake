@@ -1,9 +1,9 @@
 dependencies {
     compile project(':snake-domain')
 
-    compile 'org.glassfish.jersey.core:jersey-server:2.8'
-    compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.8'
+    compile 'org.glassfish.jersey.core:jersey-server:2.11'
+    compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.11'
 
-    compile 'org.eclipse.jetty:jetty-server:9.1.5.v20140505'
-    compile 'org.eclipse.jetty:jetty-servlet:9.1.5.v20140505'
+    compile 'org.eclipse.jetty:jetty-server:9.2.2.v20140723'
+    compile 'org.eclipse.jetty:jetty-servlet:9.2.2.v20140723'
 }

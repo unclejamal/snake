@@ -4,3 +4,5 @@ dependencies {
 
 apply plugin: 'application'
 mainClassName = 'com.pduda.snake.main.Main'
+
+build.dependsOn distZip

@@ -8,12 +8,12 @@ public class Main {
     }
 
     private void start() {
-        final SnakeServer timeExpert = new SnakeServer();
+        final SnakeServer snakeServer = new SnakeServer();
         try {
-            timeExpert.start();
-            timeExpert.join();
+            snakeServer.start();
+            snakeServer.join();
         } finally {
-            timeExpert.stop();
+            snakeServer.stop();
         }
     }
 }
