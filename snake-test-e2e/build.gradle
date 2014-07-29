@@ -1,0 +1,16 @@
+dependencies {
+    compile project(':snake-main')
+    testCompile 'org.seleniumhq.selenium:selenium-java:2.41.0'
+    testCompile 'org.seleniumhq.selenium:selenium-chrome-driver:2.41.0'
+}
+
+task startApplication {
+    doLast {
+        println 'Starting SNAKEZOR'
+        exec {
+            commandLine 'dupa.sh'
+        }
+    }
+}
+
+test.dependsOn startApplication

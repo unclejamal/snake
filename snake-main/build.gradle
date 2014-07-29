@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':snake-web')
+}
+
+apply plugin: 'application'
+mainClassName = 'com.pduda.snake.main.Main'
