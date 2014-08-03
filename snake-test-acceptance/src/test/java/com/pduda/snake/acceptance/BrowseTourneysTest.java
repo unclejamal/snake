@@ -34,7 +34,7 @@ public class BrowseTourneysTest {
     }
 
     @Test
-    public void browsingManyTourneysInTheChronologicalOrderOfAdding() {
+    public void browsingManyTourneys() {
         repository.add(new Tourney("Szeligi"));
         repository.add(new Tourney("Blazejewko"));
 
