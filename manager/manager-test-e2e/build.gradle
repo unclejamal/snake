@@ -1,0 +1,24 @@
+dependencies {
+    testCompile 'org.seleniumhq.selenium:selenium-java:2.42.2'
+    testCompile 'org.seleniumhq.selenium:selenium-chrome-driver:2.42.2'
+}
+
+task startApplication {
+    doLast {
+        exec {
+            commandLine "${project.projectDir}/start.sh", "${project.rootProject.projectDir}"
+        }
+    }
+}
+
+task stopApplication {
+    doLast {
+        exec {
+            commandLine "${project.projectDir}/stop.sh", "${project.rootProject.projectDir}"
+        }
+    }
+}
+
+
+test.dependsOn startApplication
+test.finalizedBy stopApplication

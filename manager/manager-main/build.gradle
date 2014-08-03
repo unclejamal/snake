@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':manager-web')
+}
+
+apply plugin: 'application'
+mainClassName = 'pduda.snake.manager.main.Main'
+
+build.dependsOn distZip
