@@ -5,5 +5,5 @@ import java.util.List;
 public interface TourneyRepository {
     void add(Tourney tourney);
 
-    List<Tourney> findAll();
+    java.util.Set<Tourney> findAll();
 }

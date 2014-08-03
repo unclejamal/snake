@@ -1,5 +1,6 @@
 package com.pduda.snake.web;
 
+import com.pduda.snake.usecase.BrowseTourneys;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.DefaultServlet;
@@ -8,11 +9,21 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 public class SnakeServer {
     private Server server;
+    private final BrowseTourneys browseTourneys;
+
+    public SnakeServer(BrowseTourneys browseTourneys) {
+        this.browseTourneys = browseTourneys;
+    }
 
     public void start() {
         server = new Server(9999);
@@ -42,6 +53,13 @@ public class SnakeServer {
     private ServletContextHandler staticContentHandler() {
         ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/snake");
+        // PAWEL: temporary hack to see if things can be wired up properly
+        handler.addServlet(new ServletHolder(new HttpServlet() {
+            @Override
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                resp.getWriter().write(browseTourneys.execute().toString());
+            }
+        }), "/tourneys");
         handler.addServlet(new ServletHolder(new DefaultServlet()), "/*");
 //        final FilterHolder filterHolder = new FilterHolder(new UrlRewriteFilter());
 //        handler.addFilter(filterHolder, "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD) );

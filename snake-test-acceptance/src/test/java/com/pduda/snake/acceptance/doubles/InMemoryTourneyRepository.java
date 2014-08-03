@@ -5,7 +5,6 @@ import com.pduda.snake.domain.TourneyRepository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class InMemoryTourneyRepository implements TourneyRepository {
@@ -17,7 +16,7 @@ public class InMemoryTourneyRepository implements TourneyRepository {
     }
 
     @Override
-    public List<Tourney> findAll() {
-        return new ArrayList(tourneys);
+    public Set<Tourney> findAll() {
+        return new HashSet(tourneys);
     }
 }

@@ -8,9 +8,10 @@ import com.pduda.snake.usecase.BrowseTourneys;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
+import java.util.Set;
 
 import static com.pduda.snake.CollectionUtils.asList;
+import static com.pduda.snake.CollectionUtils.asSet;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
@@ -28,16 +29,17 @@ public class BrowseTourneysTest {
 
     @Test
     public void browsingNoTourneys() {
-        List<PresentableTourney> presentableTourneys = useCase.execute();
+        Set<PresentableTourney> presentableTourneys = useCase.execute();
         assertThat(presentableTourneys, empty());
     }
 
     @Test
-    public void browsingManyTourneys() {
+    public void browsingManyTourneysInTheChronologicalOrderOfAdding() {
         repository.add(new Tourney("Szeligi"));
         repository.add(new Tourney("Blazejewko"));
-        List<PresentableTourney> presentableTourneys = useCase.execute();
-        assertThat(presentableTourneys, is(asList(
+
+        Set<PresentableTourney> presentableTourneys = useCase.execute();
+        assertThat(presentableTourneys, is(asSet(
                 new PresentableTourney("Szeligi"),
                 new PresentableTourney("Blazejewko"))));
     }

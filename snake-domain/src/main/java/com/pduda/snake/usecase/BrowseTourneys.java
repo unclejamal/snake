@@ -3,9 +3,9 @@ package com.pduda.snake.usecase;
 import com.pduda.snake.domain.PresentableTourney;
 import com.pduda.snake.domain.TourneyRepository;
 
-import java.util.List;
+import java.util.Set;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 public class BrowseTourneys {
     private TourneyRepository tourneyRepository;
@@ -14,11 +14,11 @@ public class BrowseTourneys {
         this.tourneyRepository = tourneyRepository;
     }
 
-    public List<PresentableTourney> execute() {
+    public Set<PresentableTourney> execute() {
         return tourneyRepository.findAll()
                 .stream()
                 .map(t -> new PresentableTourney(t.name()))
-                .collect(toList());
+                .collect(toSet());
     }
 
 
