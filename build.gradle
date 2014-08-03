@@ -4,11 +4,14 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
-
     sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
     version = '1.0'
 
     test {
+        maxParallelForks = Runtime.runtime.availableProcessors()
+
         testLogging {
             exceptionFormat = 'full'
         }
@@ -19,7 +22,7 @@ subprojects {
     }
 
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.11'
-        testCompile group: 'org.mockito', name: 'mockito-core', version: '1.8.5'
+        testCompile 'junit:junit:4.11'
+        testCompile 'org.hamcrest:hamcrest-all:1.3'
     }
 }
