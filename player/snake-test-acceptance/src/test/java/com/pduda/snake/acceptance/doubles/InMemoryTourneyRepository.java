@@ -17,6 +17,6 @@ public class InMemoryTourneyRepository implements TourneyRepository {
 
     @Override
     public Set<Tourney> findAll() {
-        return new HashSet(tourneys);
+        return new HashSet<>(tourneys);
     }
 }
