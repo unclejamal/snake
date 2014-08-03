@@ -15,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 
-public class SimplestTournamentTest {
+public class BrowseTourneysTest {
 
     private BrowseTourneys useCase;
     private TourneyRepository repository;
@@ -33,9 +33,12 @@ public class SimplestTournamentTest {
     }
 
     @Test
-    public void browsingOneTourney() {
+    public void browsingManyTourneys() {
         repository.add(new Tourney("Szeligi"));
+        repository.add(new Tourney("Blazejewko"));
         List<PresentableTourney> presentableTourneys = useCase.execute();
-        assertThat(presentableTourneys, is(asList(new PresentableTourney("Szeligi"))));
+        assertThat(presentableTourneys, is(asList(
+                new PresentableTourney("Szeligi"),
+                new PresentableTourney("Blazejewko"))));
     }
 }
