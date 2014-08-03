@@ -1,4 +1,4 @@
-package pduda.snake.manager.acceptance;
+package pduda.snake.manager.acceptance.doubles;
 
 import pduda.snake.manager.domain.model.Tourney;
 import pduda.snake.manager.domain.model.TourneyRepository;

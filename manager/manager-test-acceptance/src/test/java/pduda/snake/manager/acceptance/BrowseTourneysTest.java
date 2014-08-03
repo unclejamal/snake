@@ -2,6 +2,7 @@ package pduda.snake.manager.acceptance;
 
 import org.junit.Before;
 import org.junit.Test;
+import pduda.snake.manager.acceptance.doubles.InMemoryTourneyRepository;
 import pduda.snake.manager.domain.model.PresentableTourney;
 import pduda.snake.manager.domain.model.Tourney;
 import pduda.snake.manager.domain.model.TourneyRepository;
