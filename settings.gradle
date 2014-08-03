@@ -1,2 +1,2 @@
-include 'snake-main', 'snake-domain', 'snake-web', 'snake-test-acceptance', 'snake-test-e2e'
+include 'release', 'player', 'manager'
 
