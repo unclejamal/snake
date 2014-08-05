@@ -3,7 +3,7 @@ package pduda.snake.manager.acceptance;
 import org.junit.Before;
 import org.junit.Test;
 import pduda.snake.manager.acceptance.doubles.InMemoryTourneyRepository;
-import pduda.snake.manager.domain.model.Tourney;
+import pduda.snake.manager.domain.model.TourneyCreation;
 import pduda.snake.manager.domain.model.TourneyRepository;
 import pduda.snake.manager.domain.usecase.RegisterTeams;
 import pduda.snake.manager.domain.usecase.RegisterTeamsRequest;
@@ -25,7 +25,7 @@ public class RegisterTeamsTest {
 
     @Test
     public void registeringASingleTeam() {
-        repository.add(new Tourney("Szeligi"));
+        repository.add(new TourneyCreation("Szeligi"));
 
         useCase.execute(
                 new RegisterTeamsRequest(
@@ -37,7 +37,7 @@ public class RegisterTeamsTest {
                 )
         );
 
-        Tourney expected = new Tourney("Szeligi");
+        TourneyCreation expected = new TourneyCreation("Szeligi");
         expected.registerTeams(asSet(
                 new RegisterTeamsRequest.Team("Team A"),
                 new RegisterTeamsRequest.Team("Team B")

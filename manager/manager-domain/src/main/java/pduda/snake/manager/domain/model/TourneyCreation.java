@@ -7,11 +7,11 @@ import pduda.snake.manager.domain.usecase.RegisterTeamsRequest;
 
 import java.util.Set;
 
-public class Tourney {
+public class TourneyCreation {
     private String name;
     private Set<RegisterTeamsRequest.Team> teams;
 
-    public Tourney(String name) {
+    public TourneyCreation(String name) {
         this.name = name;
     }
 

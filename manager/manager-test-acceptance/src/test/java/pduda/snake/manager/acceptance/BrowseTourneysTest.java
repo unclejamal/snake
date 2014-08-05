@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import pduda.snake.manager.acceptance.doubles.InMemoryTourneyRepository;
 import pduda.snake.manager.domain.model.PresentableTourney;
-import pduda.snake.manager.domain.model.Tourney;
+import pduda.snake.manager.domain.model.TourneyCreation;
 import pduda.snake.manager.domain.model.TourneyRepository;
 import pduda.snake.manager.domain.usecase.BrowseTourneys;
 
@@ -34,8 +34,8 @@ public class BrowseTourneysTest {
 
     @Test
     public void browsingManyTourneys() {
-        repository.add(new Tourney("Szeligi"));
-        repository.add(new Tourney("Blazejewko"));
+        repository.add(new TourneyCreation("Szeligi"));
+        repository.add(new TourneyCreation("Blazejewko"));
 
         Set<PresentableTourney> presentableTourneys = useCase.execute();
         assertThat(presentableTourneys, is(asSet(

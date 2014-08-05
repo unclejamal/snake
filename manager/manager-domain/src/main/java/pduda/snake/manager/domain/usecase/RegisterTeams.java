@@ -1,6 +1,6 @@
 package pduda.snake.manager.domain.usecase;
 
-import pduda.snake.manager.domain.model.Tourney;
+import pduda.snake.manager.domain.model.TourneyCreation;
 import pduda.snake.manager.domain.model.TourneyRepository;
 
 public class RegisterTeams {
@@ -11,7 +11,7 @@ public class RegisterTeams {
     }
 
     public void execute(RegisterTeamsRequest request) {
-        Tourney tourney = repository.findTourneyByName(request.tourneyName);
-        tourney.registerTeams(request.teams);
+        TourneyCreation tourneyCreation = repository.findTourneyByName(request.tourneyName);
+        tourneyCreation.registerTeams(request.teams);
     }
 }

@@ -1,9 +1,9 @@
 package pduda.snake.manager.domain.model;
 
 public interface TourneyRepository {
-    void add(Tourney tourney);
+    void add(TourneyCreation tourneyCreation);
 
-    java.util.Set<Tourney> findAll();
+    java.util.Set<TourneyCreation> findAll();
 
-    Tourney findTourneyByName(String szeligi);
+    TourneyCreation findTourneyByName(String szeligi);
 }

@@ -1,6 +1,6 @@
 package pduda.snake.manager.main;
 
-import pduda.snake.manager.domain.model.Tourney;
+import pduda.snake.manager.domain.model.TourneyCreation;
 import pduda.snake.manager.domain.model.TourneyRepository;
 import pduda.snake.manager.domain.usecase.BrowseTourneys;
 import pduda.snake.manager.web.SnakeServer;
@@ -17,17 +17,17 @@ public class Main {
     private void start() {
         SnakeServer snakeServer = new SnakeServer(new BrowseTourneys(new TourneyRepository() {
             @Override
-            public void add(Tourney tourney) {
+            public void add(TourneyCreation tourney) {
 
             }
 
             @Override
-            public Set<Tourney> findAll() {
-                return asSet(new Tourney("Tourney 1"), new Tourney("Tourney 2"));
+            public Set<TourneyCreation> findAll() {
+                return asSet(new TourneyCreation("Tourney 1"), new TourneyCreation("Tourney 2"));
             }
 
             @Override
-            public Tourney findTourneyByName(String szeligi) {
+            public TourneyCreation findTourneyByName(String szeligi) {
                 return null;
             }
         }));
