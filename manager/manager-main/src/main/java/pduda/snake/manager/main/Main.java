@@ -25,6 +25,11 @@ public class Main {
             public Set<Tourney> findAll() {
                 return asSet(new Tourney("Tourney 1"), new Tourney("Tourney 2"));
             }
+
+            @Override
+            public Tourney findTourneyByName(String szeligi) {
+                return null;
+            }
         }));
         try {
             snakeServer.start();
