@@ -1,12 +1,13 @@
 package pduda.snake.manager.web;
 
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.template.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.servlet.ServletContainer;
+import pduda.snake.manager.domain.ProgrammerMistake;
 import pduda.snake.manager.domain.usecase.BrowseTourneys;
 
 import javax.servlet.ServletException;
@@ -15,7 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class SnakeServer {
     private Server server;
@@ -28,12 +33,9 @@ public class SnakeServer {
     public void start() {
         server = new Server(9999);
         HandlerCollection handlers = new HandlerCollection();
-//        handlers.addHandler(servletContextHandler());
-        handlers.addHandler(staticContentHandler());
-//
-//        ServletContextHandler handler = new ServletContextHandler();
-//        handler.setContextPath("snake");
-//        handler.addServlet(new ServletHolder(new ServletContainer(resourceConfig())), "/*");
+        handlers.addHandler(assetsHandler());
+        handlers.addHandler(servletContextHandler());
+
         server.setHandler(handlers);
         try {
             server.start();
@@ -42,48 +44,71 @@ public class SnakeServer {
         }
     }
 
-
     private ServletContextHandler servletContextHandler() {
         ServletContextHandler handler = new ServletContextHandler();
-        handler.setContextPath("/snake/rest");
-        handler.addServlet(new ServletHolder(new ServletContainer(resourceConfig())), "/*");
-        return handler;
-    }
-
-    private ServletContextHandler staticContentHandler() {
-        ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/snake");
-        // PAWEL: temporary hack to see if things can be wired up properly
         handler.addServlet(new ServletHolder(new HttpServlet() {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                resp.getWriter().write(browseTourneys.execute().toString());
+                getHomePage(resp.getWriter());
+                resp.getWriter().flush();
             }
-        }), "/tourneys");
+
+            private void getHomePage(Writer writer) {
+                long startTime = System.currentTimeMillis();
+                Configuration cfg = new Configuration(new Version("1.0")); // TODO
+                cfg.setTemplateLoader(new ClassTemplateLoader(this.getClass(), "/templates"));
+                cfg.setDefaultEncoding("UTF-8");
+                cfg.setLocale(Locale.getDefault());
+                cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+
+                try {
+                    Template template = cfg.getTemplate("index.html");
+                    Map<Object, Object> dataModel = new HashMap<>();
+                    dataModel.put("appName", "Snakez0r");
+                    template.process(dataModel, writer);
+                    writer.flush();
+
+                } catch (IOException e) {
+                    throw new ProgrammerMistake(e);
+                } catch (TemplateException e) {
+                    throw new ProgrammerMistake(e);
+                }
+
+                long endTime = System.currentTimeMillis();
+                System.out.println("Rendering time: " + (endTime - startTime));
+            }
+        }), "/*");
+        return handler;
+    }
+
+    private ServletContextHandler assetsHandler() {
+        ServletContextHandler handler = new ServletContextHandler();
+        handler.setContextPath("/assets");
         handler.addServlet(new ServletHolder(new DefaultServlet()), "/*");
-//        final FilterHolder filterHolder = new FilterHolder(new UrlRewriteFilter());
-//        handler.addFilter(filterHolder, "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD) );
-        handler.setResourceBase(resourceBase());
+        handler.setResourceBase(assetsBase());
         handler.setClassLoader(Thread.currentThread().getContextClassLoader());
 //        handler.setWelcomeFiles(new String[]{"index.html"});
         return handler;
     }
 
-    private String resourceBase() {
-        URL webapp = this.getClass().getClassLoader().getResource("webapp");
-        if (webapp != null) {
+    private String assetsBase() {
+        String resourceBase = findAssetsBase();
+        System.out.println("*** Resource base: " + resourceBase);
+        return resourceBase;
+    }
+
+    private String findAssetsBase() {
+        URL assets = this.getClass().getClassLoader().getResource("assets");
+        if (assets != null) {
             System.out.println("*** Running distribution");
-            return webapp.toExternalForm();
+            return assets.toExternalForm();
         } else {
             System.out.println("*** Running from ide");
             String absolutePath = new File(".").getAbsolutePath();
-            String result = absolutePath.substring(0, absolutePath.indexOf("snake/") + "snake/".length());
-            return result + "snake-web/src/main/resources/webapp";
+            String result = absolutePath.substring(0, absolutePath.indexOf("manager/") + "manager/".length());
+            return result + "manager-web/src/main/resources/assets";
         }
-    }
-
-    private ResourceConfig resourceConfig() {
-        return new ResourceConfig();
     }
 
     public void stop() {
