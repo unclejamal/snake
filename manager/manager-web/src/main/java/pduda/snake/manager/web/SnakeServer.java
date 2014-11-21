@@ -88,7 +88,6 @@ public class SnakeServer {
         handler.addServlet(new ServletHolder(new DefaultServlet()), "/*");
         handler.setResourceBase(assetsBase());
         handler.setClassLoader(Thread.currentThread().getContextClassLoader());
-//        handler.setWelcomeFiles(new String[]{"index.html"});
         return handler;
     }
 
