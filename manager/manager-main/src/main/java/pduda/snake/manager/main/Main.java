@@ -3,7 +3,7 @@ package pduda.snake.manager.main;
 import pduda.snake.manager.domain.model.TourneyCreation;
 import pduda.snake.manager.domain.model.TourneyRepository;
 import pduda.snake.manager.domain.usecase.BrowseTourneys;
-import pduda.snake.manager.web.SnakeServer;
+import pduda.snake.manager.web.JettySnakeServer;
 
 import java.util.Set;
 
@@ -15,7 +15,7 @@ public class Main {
     }
 
     private void start() {
-        SnakeServer snakeServer = new SnakeServer(new BrowseTourneys(new TourneyRepository() {
+        JettySnakeServer snakeServer = new JettySnakeServer(new BrowseTourneys(new TourneyRepository() {
             @Override
             public void add(TourneyCreation tourney) {
 

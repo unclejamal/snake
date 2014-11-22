@@ -1,10 +1,14 @@
 package pduda.snake.manager.domain.model;
 
 public class PresentableTourney {
-    private String name;
+    public String name;
 
     public PresentableTourney(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

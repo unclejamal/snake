@@ -1,32 +1,21 @@
 package pduda.snake.manager.web;
 
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.template.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import pduda.snake.manager.domain.ProgrammerMistake;
+import pduda.mvc.MvcServlet;
 import pduda.snake.manager.domain.usecase.BrowseTourneys;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
-import java.io.Writer;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
-public class SnakeServer {
+public class JettySnakeServer {
     private Server server;
     private final BrowseTourneys browseTourneys;
 
-    public SnakeServer(BrowseTourneys browseTourneys) {
+    public JettySnakeServer(BrowseTourneys browseTourneys) {
         this.browseTourneys = browseTourneys;
     }
 
@@ -34,7 +23,7 @@ public class SnakeServer {
         server = new Server(9999);
         HandlerCollection handlers = new HandlerCollection();
         handlers.addHandler(assetsHandler());
-        handlers.addHandler(servletContextHandler());
+        handlers.addHandler(appHandler());
 
         server.setHandler(handlers);
         try {
@@ -44,41 +33,10 @@ public class SnakeServer {
         }
     }
 
-    private ServletContextHandler servletContextHandler() {
+    private ServletContextHandler appHandler() {
         ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/snake");
-        handler.addServlet(new ServletHolder(new HttpServlet() {
-            @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                getHomePage(resp.getWriter());
-                resp.getWriter().flush();
-            }
-
-            private void getHomePage(Writer writer) {
-                long startTime = System.currentTimeMillis();
-                Configuration cfg = new Configuration(new Version("1.0")); // TODO
-                cfg.setTemplateLoader(new ClassTemplateLoader(this.getClass(), "/templates"));
-                cfg.setDefaultEncoding("UTF-8");
-                cfg.setLocale(Locale.getDefault());
-                cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-
-                try {
-                    Template template = cfg.getTemplate("index.html");
-                    Map<Object, Object> dataModel = new HashMap<>();
-                    dataModel.put("appName", "Snakez0r");
-                    template.process(dataModel, writer);
-                    writer.flush();
-
-                } catch (IOException e) {
-                    throw new ProgrammerMistake(e);
-                } catch (TemplateException e) {
-                    throw new ProgrammerMistake(e);
-                }
-
-                long endTime = System.currentTimeMillis();
-                System.out.println("Rendering time: " + (endTime - startTime));
-            }
-        }), "/*");
+        handler.addServlet(new ServletHolder(new MvcServlet(browseTourneys)), "/*");
         return handler;
     }
 
@@ -125,4 +83,5 @@ public class SnakeServer {
             throw new RuntimeException("Could not join the thread", e);
         }
     }
+
 }
