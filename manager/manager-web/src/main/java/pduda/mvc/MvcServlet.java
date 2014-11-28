@@ -3,8 +3,6 @@ package pduda.mvc;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.*;
 import pduda.snake.manager.domain.ProgrammerMistake;
-import pduda.snake.manager.domain.model.PresentableTourney;
-import pduda.snake.manager.domain.usecase.BrowseTourneys;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,18 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 public class MvcServlet extends HttpServlet {
-    private final BrowseTourneys browseTourneys;
     private final Configuration freemarkerConfiguration;
 
-    public MvcServlet(BrowseTourneys browseTourneys) {
-        this.browseTourneys = browseTourneys;
+    public MvcServlet() {
         this.freemarkerConfiguration = createFreemarkerConfiguration();
     }
 
@@ -32,7 +27,7 @@ public class MvcServlet extends HttpServlet {
         if (req.getRequestURI().contains("tourneys")) {
             Template template = freemarkerConfiguration.getTemplate("tourneys.html");
             TourneysView view = new TourneysView(template, resp.getWriter());
-            TourneysController controller = new TourneysController(view, browseTourneys);
+            TourneysController controller = new TourneysController(view);
             controller.process();
 
         } else {
@@ -66,15 +61,13 @@ public class MvcServlet extends HttpServlet {
 
     private static class TourneysController {
         private final TourneysView view;
-        private final BrowseTourneys browseTourneys;
 
-        public TourneysController(TourneysView view, BrowseTourneys browseTourneys) {
+        public TourneysController(TourneysView view) {
             this.view = view;
-            this.browseTourneys = browseTourneys;
         }
 
         public void process() {
-            view.display(browseTourneys.execute());
+            view.display();
         }
     }
 
@@ -111,9 +104,9 @@ public class MvcServlet extends HttpServlet {
             this.writer = writer;
         }
 
-        public void display(Set<PresentableTourney> tourneys) {
+        public void display() {
             Map<String, Object> data = new HashMap<>();
-            data.put("tourneys", tourneys);
+            data.put("tourneys", Collections.emptyList());
 
             try {
                 template.process(data, writer);

@@ -6,18 +6,12 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import pduda.mvc.MvcServlet;
-import pduda.snake.manager.domain.usecase.BrowseTourneys;
 
 import java.io.File;
 import java.net.URL;
 
 public class JettySnakeServer {
     private Server server;
-    private final BrowseTourneys browseTourneys;
-
-    public JettySnakeServer(BrowseTourneys browseTourneys) {
-        this.browseTourneys = browseTourneys;
-    }
 
     public void start() {
         server = new Server(9999);
@@ -36,7 +30,7 @@ public class JettySnakeServer {
     private ServletContextHandler appHandler() {
         ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/snake");
-        handler.addServlet(new ServletHolder(new MvcServlet(browseTourneys)), "/*");
+        handler.addServlet(new ServletHolder(new MvcServlet()), "/*");
         return handler;
     }
 
